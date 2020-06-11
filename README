@@ -1,0 +1,14 @@
+- environment
+    $ uname -a
+    Darwin hiroki-mac.local 19.5.0 Darwin Kernel Version 19.5.0: Tue May 26 20:41:44 PDT 2020; root:xnu-6153.121.2~2/RELEASE_X86_64 x86_64
+
+    $ qemu-system-i386 --version
+    QEMU emulator version 4.2.0
+    Copyright (c) 2003-2019 Fabrice Bellard and the QEMU Project developers
+
+    $ nasm -v
+    NASM version 2.14.02 compiled on Sep 28 2019
+
+- 1st hello.asm
+    http://bttb.s1.valueserver.jp/wordpress/blog/2017/11/14/make-os1/
+
