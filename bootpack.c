@@ -9,6 +9,7 @@ void io_store_eflags(int eflags);
 void init_palette(void);
 void set_palette(int start, int end, unsigned char *rgb);
 void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
+void putfont8(char *vram, int xsize, int x, int y, char c, char *font);
 
 #define COL8_000000 0    // Black
 #define COL8_FF0000 1    // Red
@@ -27,13 +28,30 @@ void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, i
 #define COL8_008484 14   // Windows desctop
 #define COL8_848484 15   // Grey
 
+struct BOOTINFO {
+    char cyls, leds, vmode, reserve;
+    short scrnx, scrny;
+    char *vram;
+};
+
 void HiosMain(void) {
+    char *vram;
+    int xsize, ysize;
+    struct BOOTINFO *binfo;
+    static char font_A[16] = {
+        0x00, 0x18, 0x18, 0x18, 0x18, 0x24, 0x24, 0x24,
+        0x24, 0x7e, 0x42, 0x42, 0x42, 0xe7, 0x00, 0x00,
+    };
+
     init_palette();
 
-    char *p;
-    p = (char *)0xa0000;
-    int xsize = 320;
-    int ysize = 200;
+    binfo = (struct BOOTINFO *) 0x0ff0;  // 0x0ff0 is defined in nasmhead.asm as boot info.
+    xsize = binfo->scrnx;
+    ysize = binfo->scrny;
+    vram = binfo->vram;
+
+    init_screen(vram, xsize, ysize);
+    putfont8(vram, xsize, 10, 15, COL8_000000, font_A);
 
 /* Draw stripe by assigning specific value in VRAM address.
     int i;
@@ -41,41 +59,6 @@ void HiosMain(void) {
         p[i] = i & 0x0f;
     }
 */
-    // Desctop screen
-    boxfill8(p,
-             xsize,
-             COL8_C6C6C6,
-             0,
-             0,
-             xsize - 1,
-             ysize - 1);
-
-    // Top bar
-    boxfill8(p,
-             xsize,
-             COL8_848484,
-             0,
-             0,
-             xsize - 1,
-             10);
-
-    // Small icon on top bar
-    boxfill8(p,
-             xsize,
-             COL8_FF0000,
-             2,
-             2,
-             8,
-             8);
-
-    // Tool bar below
-    boxfill8(p,
-             xsize,
-             COL8_848484,
-             50,
-             ysize - 28,
-             xsize - 50,
-             ysize - 1);
 
     for (;;) {
         io_hlt();
@@ -130,4 +113,61 @@ void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, i
         }
     }
     return;
+}
+
+void init_screen(char *vram, int x, int y) {
+    // Desctop screen
+    boxfill8(vram,
+             x,
+             COL8_C6C6C6,
+             0,
+             0,
+             x - 1,
+             y - 1);
+
+    // Top bar
+    boxfill8(vram,
+             x,
+             COL8_848484,
+             0,
+             0,
+             x - 1,
+             10);
+
+    // Small icon on top bar
+    boxfill8(vram,
+             x,
+             COL8_FF0000,
+             2,
+             2,
+             8,
+             8);
+
+    // Tool bar below
+    boxfill8(vram,
+             x,
+             COL8_848484,
+             50,
+             y - 28,
+             x - 50,
+             y - 1);
+
+    return;
+}
+
+void putfont8(char *vram, int xsize, int x, int y, char c, char *font) {
+    int i;
+    char *p, d;
+    for (i = 0; i < 16; i++) {
+        p = vram + (y + i) * xsize + x;
+        d = font[i];
+        if ((d & 0x80) != 0) { p[0] = c; }  // 1st column - 10000000
+        if ((d & 0x40) != 0) { p[1] = c; }  // 2nd column - 01000000
+        if ((d & 0x20) != 0) { p[2] = c; }  // 3rd column - 00100000
+        if ((d & 0x10) != 0) { p[3] = c; }  // 4th column - 00010000
+        if ((d & 0x08) != 0) { p[4] = c; }  // 5th column - 00001000
+        if ((d & 0x04) != 0) { p[5] = c; }  // 6th column - 00000100
+        if ((d & 0x02) != 0) { p[6] = c; }  // 7th column - 00000010
+        if ((d & 0x01) != 0) { p[7] = c; }  // 8th column - 00000001
+    }
 }

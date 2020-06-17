@@ -1,5 +1,6 @@
 ; ipl.asm
 ; IPL(Initial Program Loader)
+;   The size of ipl.bin must be 512 byte.
 
         CYLS    equ     10
 
