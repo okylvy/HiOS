@@ -18,8 +18,11 @@ bootpack.o: bootpack.c
 	$(GCC) -c -m32 -fno-pic -o bootpack.o bootpack.c
 #	gcc -c -m32 -fno-pic -o bootpack.o bootpack.c
 
-bootpack.bin: bootpack.o nasmfunc.o
-	$(LD) -m elf_i386 -e HiosMain -o bootpack.bin -T os.ls bootpack.o nasmfunc.o
+fonts.o: fonts.c
+	$(GCC) -c -m32 -o fonts.o fonts.c
+
+bootpack.bin: bootpack.o fonts.o nasmfunc.o
+	$(LD) -m elf_i386 -e HiosMain -o bootpack.bin -T os.ls bootpack.o fonts.o nasmfunc.o
 #	ld -e HiosMain -o bootpack.bin -T os.ls bootpack.o nasmfunc.o
 
 os.sys: nasmhead.bin bootpack.bin

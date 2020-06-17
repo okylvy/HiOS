@@ -38,6 +38,8 @@ void HiosMain(void) {
     char *vram;
     int xsize, ysize;
     struct BOOTINFO *binfo;
+
+    extern char fonts[4096];
     static char font_A[16] = {
         0x00, 0x18, 0x18, 0x18, 0x18, 0x24, 0x24, 0x24,
         0x24, 0x7e, 0x42, 0x42, 0x42, 0xe7, 0x00, 0x00,
@@ -52,6 +54,7 @@ void HiosMain(void) {
 
     init_screen(vram, xsize, ysize);
     putfont8(vram, xsize, 10, 15, COL8_000000, font_A);
+    putfont8(vram, xsize, 18, 15, COL8_000000, fonts + 'C' * 16);
 
 /* Draw stripe by assigning specific value in VRAM address.
     int i;
