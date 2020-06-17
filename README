@@ -9,10 +9,7 @@
     $ nasm -v
     NASM version 2.14.02 compiled on Sep 28 2019
 
-
-
-
-    !! original gcc, ld
+    !! original gcc, ld on the macOS
     $ gcc -v
     Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/4.2.1
     Apple clang version 11.0.3 (clang-1103.0.32.29)
@@ -28,7 +25,7 @@
     TAPI support using: Apple TAPI version 11.0.0 (tapi-1100.0.11)
 
 - reference
-    - 本の独自環境に依存しない実装方法
+    - How to implement without using tools provided in the OS book
         http://bttb.s1.valueserver.jp/wordpress/blog/2017/11/14/make-os1/
-    - GNU GCC, ld を macOS で使う方法
+    - How to use GNU GCC, ld on manOS
         https://kk-river108.hatenablog.com/entry/2018/05/04/142549

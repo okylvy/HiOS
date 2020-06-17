@@ -8,6 +8,8 @@ NASM=nasm
 LD=/usr/local/i386elfgcc/i386-elf/bin/ld
 GCC=/usr/local/i386elfgcc/bin/i386-elf-gcc
 
+.PHONY: clean
+
 nasmhead.bin: nasmhead.asm
 	$(NASM) -o nasmhead.bin nasmhead.asm
 
@@ -16,14 +18,12 @@ nasmfunc.o: nasmfunc.asm
 
 bootpack.o: bootpack.c
 	$(GCC) -c -m32 -fno-pic -o bootpack.o bootpack.c
-#	gcc -c -m32 -fno-pic -o bootpack.o bootpack.c
 
 fonts.o: fonts.c
 	$(GCC) -c -m32 -o fonts.o fonts.c
 
 bootpack.bin: bootpack.o fonts.o nasmfunc.o
 	$(LD) -m elf_i386 -e HiosMain -o bootpack.bin -T os.ls bootpack.o fonts.o nasmfunc.o
-#	ld -e HiosMain -o bootpack.bin -T os.ls bootpack.o nasmfunc.o
 
 os.sys: nasmhead.bin bootpack.bin
 	cat nasmhead.bin bootpack.bin > os.sys
@@ -43,3 +43,4 @@ clean:
 	rm -rf *.o
 	rm -rf *.sys
 	rm -rf *.img
+	rm -rf fonts.c
