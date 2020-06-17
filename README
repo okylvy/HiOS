@@ -9,6 +9,26 @@
     $ nasm -v
     NASM version 2.14.02 compiled on Sep 28 2019
 
-- 1st hello.asm
-    http://bttb.s1.valueserver.jp/wordpress/blog/2017/11/14/make-os1/
 
+
+
+    !! original gcc, ld
+    $ gcc -v
+    Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/4.2.1
+    Apple clang version 11.0.3 (clang-1103.0.32.29)
+    Target: x86_64-apple-darwin19.5.0
+    Thread model: posix
+    InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+
+    $ ld -v
+    @(#)PROGRAM:ld  PROJECT:ld64-556.5
+    BUILD 19:04:29 Mar  6 2020
+    configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+    LTO support using: LLVM version 11.0.3, (clang-1103.0.32.29) (static support for 26, runtime is 26)
+    TAPI support using: Apple TAPI version 11.0.0 (tapi-1100.0.11)
+
+- reference
+    - 本の独自環境に依存しない実装方法
+        http://bttb.s1.valueserver.jp/wordpress/blog/2017/11/14/make-os1/
+    - GNU GCC, ld を macOS で使う方法
+        https://kk-river108.hatenablog.com/entry/2018/05/04/142549
