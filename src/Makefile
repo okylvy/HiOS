@@ -5,8 +5,8 @@ QEMU_ARGS=\
 #	-drive file=os.img,format=raw
 #	-boot order=c
 NASM=nasm
-LD=/usr/local/i386elfgcc/i386-elf/bin/ld
-GCC=/usr/local/i386elfgcc/bin/i386-elf-gcc
+GCC=gcc
+LD=ld
 
 .PHONY: clean
 
